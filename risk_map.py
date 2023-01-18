@@ -14,7 +14,7 @@ from osgeo import gdal
 
 
 ### SET UP CURRENT WORKING DIRECTORY###
-os.chdir(r'C:\Document\ClarkLab\automation team\TerraCarbon')
+os.chdir(r'C:\Document\ClarkLab\automation team\TerraCarbon\Risk_Map\data')
 
 
 ### INPUT "MAP OF DISTANCE FROM THE FOREST EDGE" FILE###
@@ -42,27 +42,22 @@ n_classes: number of classes
 LL = xres= in_ds.GetGeoTransform()[1]
 UL = NRT = 2460
 n_classes = 30
+
 # Calculate common ratio(r)
 r = np.power(LL / UL, 1/n_classes)
 # print("Common ratio : ",r)
 
-# Create an empty class array to generate a list of LLc value
-class_array = []
-for c in range(n_classes):
-    LLc = UL * r**c
-    class_array.append(LLc)
-class_array.append(xres)
-#print(class_array)
+#Create 2D 30 class_array and sort from class 1 to 30
+class1=np.arange(1,31).reshape(15, 2)
+class2=np.arange(0,30).reshape(15, 2)
+class_array=np.concatenate((class1,class2))
+class_array=sorted(class_array, key=lambda x: x[1])
+# print(class_array)
 
-# Create a new class array include ULc and LLc in each class
-class_array_n = []
-i=0
-for i in range(n_classes):
-    a = class_array[i:i+2]
-    i+=1
-    class_array_n.append(a)
-#print(class_array_n)
-
+# Calculate UL and LL value in each class
+x= np.power(r, class_array)
+risk_class=np.multiply(UL,x)
+# print(risk_class)
 
 ###RECLASSIFY DISTANCE MAP###
 # Create NRT Mask array
@@ -71,10 +66,9 @@ mask_arr = mask_arr.filled(0)
 
 # Reclassification
 index=0
-for UL, LL in class_array_n:
+for UL, LL in risk_class:
     mask_arr[np.where((UL > mask_arr) & (mask_arr >= LL))] = index+1
     index+=1
-#print(mask_arr)
 
 
 ###EXPORT MAP OF RISK###
