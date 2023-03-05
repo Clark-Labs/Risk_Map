@@ -4,17 +4,17 @@ from osgeo import gdal
 
 ### USER INPUT###
 # #Input NRT number from user as float32, [2460]
-# NRT = np.float32(input("Please Enter NRT (Negligible Risk Threshold) Distance: "))
-#
-# #Input numbers of non-zero classes from user as int, [30]
-# n_classes = int(input("Please Enter Number of non-zero classes: "))
-#
-# #Input filename of the output image from user as string, [risk30.rst]
-# out_fn = input("Filename for the output image: ")
+NRT = np.float32(input("Please Enter NRT (Negligible Risk Threshold) Distance: "))
+
+#Input numbers of non-zero classes from user as int, [30]
+n_classes = int(input("Please Enter Number of non-zero classes: "))
+
+#Input filename of the output image from user as string, [risk30.rst]
+out_fn = input("Filename for the output image: ")
 
 
 ### SET UP CURRENT WORKING DIRECTORY###
-os.chdir(r'C:\Document\ClarkLab\automation team\TerraCarbon\Risk_Map\data')
+os.chdir(r'')
 
 
 ### INPUT "MAP OF DISTANCE FROM THE FOREST EDGE" FILE###
@@ -40,8 +40,7 @@ LLc: lower limit of the class
 n_classes: number of classes
 """
 LL = xres= in_ds.GetGeoTransform()[1]
-UL = NRT = 2460
-n_classes = 30
+UL = NRT 
 
 # Calculate common ratio(r)
 r = np.power(LL / UL, 1/n_classes)
