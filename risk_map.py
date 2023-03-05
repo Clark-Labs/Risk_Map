@@ -3,18 +3,21 @@ import numpy as np
 from osgeo import gdal
 
 ### USER INPUT###
-# #Input NRT number from user as float32, [2460]
+#Input NRT number from user as float32, e.g., 2460.
 NRT = np.float32(input("Please Enter NRT (Negligible Risk Threshold) Distance: "))
 
-#Input numbers of non-zero classes from user as int, [30]
+#Input numbers of non-zero classes from user as int, e.g., 30.
 n_classes = int(input("Please Enter Number of non-zero classes: "))
 
-#Input filename of the output image from user as string, [risk30.rst]
+#Input filename of the output image from user as string, e.g., risk30.
 out_fn = input("Filename for the output image: ")
+
+#Input current working directory
+path = input("Current working directory: ")
 
 
 ### SET UP CURRENT WORKING DIRECTORY###
-os.chdir(r'')
+os.chdir(path)
 
 
 ### INPUT "MAP OF DISTANCE FROM THE FOREST EDGE" FILE###
